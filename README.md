@@ -24,7 +24,7 @@ A desktop application for viewing and editing descriptive metadata in **MP4, MPG
 
 ### Windows (executable)
 
-Download `video-tag-writer.exe` from [Releases](https://github.com/juren53/video-tag-writer/releases). It is a single file with ExifTool bundled, and no install is needed.
+Download `VTW.exe` from [Releases](https://github.com/juren53/video-tag-writer/releases). It is a single file with ExifTool bundled, and no install is needed.
 
 **Latest release:** [v0.1.0](https://github.com/juren53/video-tag-writer/releases/tag/v0.1.0): initial release.
 
@@ -95,7 +95,7 @@ python -m pytest tests          # 51 tests; ExifTool integration tests auto-skip
 ## Building the Windows EXE
 
 ```powershell
-.\build_exe.ps1                  # -> dist\video-tag-writer.exe (~41 MB, ExifTool bundled)
+.\build_exe.ps1                  # -> dist\VTW.exe (~41 MB, ExifTool bundled)
 .\build_exe.ps1 -IncludeFFmpeg   # also bundle ffmpeg + ffprobe (much larger)
 .\build_exe.ps1 -ExifTool C:\tools\exiftool.exe   # bundle a specific ExifTool
 ```

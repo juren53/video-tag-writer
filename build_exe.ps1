@@ -6,7 +6,7 @@
 #   .\build_exe.ps1 -ExifTool C:\path\exiftool.exe
 #   .\build_exe.ps1 -SkipTests            # skip the pytest gate
 #
-# Output: dist\video-tag-writer.exe, verified by running "--self-test" on the built EXE.
+# Output: dist\VTW.exe, verified by running "--self-test" on the built EXE.
 
 param(
     [switch]$IncludeFFmpeg,
@@ -21,7 +21,7 @@ Set-Location $ScriptDir
 $VenvDir    = Join-Path $ScriptDir "venv"
 $VenvPython = Join-Path $VenvDir "Scripts\python.exe"
 $SpecFile   = Join-Path $ScriptDir "video-tag-writer.spec"
-$ExePath    = Join-Path $ScriptDir "dist\video-tag-writer.exe"
+$ExePath    = Join-Path $ScriptDir "dist\VTW.exe"
 
 function Step($msg) { Write-Host "`n== $msg" -ForegroundColor Cyan }
 function Fail($msg) { Write-Host "BUILD FAILED: $msg" -ForegroundColor Red; exit 1 }

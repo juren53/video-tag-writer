@@ -17,9 +17,9 @@ VSVersionInfo(
           [StringStruct(u'CompanyName',      u'SynchroSoft'),
            StringStruct(u'FileDescription',  u'Video Tag Writer'),
            StringStruct(u'FileVersion',      u'0.1.0'),
-           StringStruct(u'InternalName',     u'video-tag-writer'),
+           StringStruct(u'InternalName',     u'VTW'),
            StringStruct(u'LegalCopyright',   u'Copyright (c) 2026 SynchroSoft'),
-           StringStruct(u'OriginalFilename', u'video-tag-writer.exe'),
+           StringStruct(u'OriginalFilename', u'VTW.exe'),
            StringStruct(u'ProductName',      u'Video Tag Writer'),
            StringStruct(u'ProductVersion',   u'0.1.0')])
       ]),

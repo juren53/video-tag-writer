@@ -51,9 +51,9 @@ VSVersionInfo(
           [StringStruct(u'CompanyName',      u'{org}'),
            StringStruct(u'FileDescription',  u'Video Tag Writer'),
            StringStruct(u'FileVersion',      u'{version}'),
-           StringStruct(u'InternalName',     u'video-tag-writer'),
+           StringStruct(u'InternalName',     u'VTW'),
            StringStruct(u'LegalCopyright',   u'Copyright (c) {year} {org}'),
-           StringStruct(u'OriginalFilename', u'video-tag-writer.exe'),
+           StringStruct(u'OriginalFilename', u'VTW.exe'),
            StringStruct(u'ProductName',      u'Video Tag Writer'),
            StringStruct(u'ProductVersion',   u'{version}')])
       ]),

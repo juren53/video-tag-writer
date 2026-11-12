@@ -25,3 +25,6 @@ reports/
 # ExifTool backups and generated sidecars from manual testing
 *_original
 testing/
+
+# Personal Claude Code settings (permissions)
+.claude/settings.local.json
