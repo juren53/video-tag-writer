@@ -15,8 +15,9 @@ venv_valid() {
     local cfg="$VENV_DIR/pyvenv.cfg"
     [[ -f "$cfg" ]] || return 1
     local python_home
-    python_home=$(grep -E '^home\s*=' "$cfg" | cut -d= -f2 | tr -d ' ')
-    [[ -n "$python_home" && -x "$python_home/python3" || -x "$python_home/python" ]]
+    python_home=$(grep -E '^home\s*=' "$cfg" | cut -d= -f2- | sed -E 's/^[[:space:]]+|[[:space:]]+$//g')
+    [[ -n "$python_home" ]] || return 1
+    [[ -x "$python_home/python3" || -x "$python_home/python" ]]
 }
 
 find_python() {
