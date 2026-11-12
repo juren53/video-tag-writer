@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-VideoTagWriter (VTW) is a PyQt6 desktop application for viewing and editing descriptive metadata in **MP4, M4V, MPG and MPEG** video files. It is modeled on audio-tag-writer (ATW, `~/Projects/audio-tag-writer`) and keeps ATW's architecture. The metadata layer is **ExifTool** (via PyExifTool), not Mutagen. Current version: v0.1.0.
+VideoTagWriter (VTW) is a PyQt6 desktop application for viewing and editing descriptive metadata in **MP4, M4V, MPG and MPEG** video files. It is modeled on audio-tag-writer (ATW, `~/Projects/audio-tag-writer`) and keeps ATW's architecture. The metadata layer is **ExifTool** (via PyExifTool), not Mutagen. Current version: v0.2.1.
 
 Why ExifTool, and the rules below: `notes/TOOL_COMPARISON_mutagen-vs-ffmpeg-vs-exiftool-video.md` (includes probe test results).
 

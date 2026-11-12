@@ -29,8 +29,8 @@ behind these choices.
 """
 
 APP_NAME = "VideoTagWriter"
-APP_VERSION = "0.2.0"
-APP_TIMESTAMP = "2026-11-11 2145 CST"
+APP_VERSION = "0.2.1"
+APP_TIMESTAMP = "2026-11-12 1034 CST"
 APP_ORGANIZATION = "SynchroSoft"
 APP_USER_MODEL_ID = "SynchroSoft.VTW"
 GITHUB_REPO = "juren53/video-tag-writer"

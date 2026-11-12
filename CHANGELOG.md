@@ -5,9 +5,12 @@ All notable changes to the VideoTagWriter project will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## VideoTagWriter [Unreleased]
+## VideoTagWriter [0.2.1] - 2026-11-12 1034 CST
 
 ### Changed
+- **New app icon**: a 3D film reel (photo cutout) with the Tag Writer pencil writing
+  on the film, replacing the flat indigo reel. `tools/cut_reel.py` makes the cutout;
+  `tools/gen_icon.py` draws the pencil over it.
 - The EXE no longer adds `~/Projects/ThemeManager` or `~/Projects/Icon_Manager_Module`
   to its import path; it uses only its bundled copies. On the build machine that
   fallback could hide a module missing from the EXE (as in ATW v0.7.14a).
@@ -15,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   inside the EXE, and that README/CHANGELOG are in the bundle itself.
 - `build_exe.ps1`: a startup crash during the self-test (PyInstaller's error dialog)
   no longer hangs the build; it fails after 120 s and the process is closed.
+
+### Fixed
+- `run.sh` is executable (`./run.sh` works), and its venv check no longer
+  mis-evaluates `A && B || C` or strips spaces inside the Python path.
 
 ## VideoTagWriter [0.2.0] - 2026-11-11 2145 CST
 

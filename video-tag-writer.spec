@@ -1,7 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 # PyInstaller spec for VideoTagWriter
 # Build: .\build_exe.ps1   (or: pyinstaller video-tag-writer.spec)
-# Version: 0.2.0
+# Version: 0.2.1
 #
 # Environment variables read at build time:
 #   VTW_EXIFTOOL        path to exiftool.exe to bundle (default: PATH, then ~/bin)

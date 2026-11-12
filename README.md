@@ -28,7 +28,7 @@ A desktop application for viewing and editing descriptive metadata in **MP4, MPG
 
 Download `VTW.exe` from [Releases](https://github.com/juren53/video-tag-writer/releases). It is a single file with ExifTool bundled, and no install is needed.
 
-**Latest release:** [v0.2.0](https://github.com/juren53/video-tag-writer/releases/tag/v0.2.0): adds Movie and Music modes.
+**Latest release:** [v0.2.1](https://github.com/juren53/video-tag-writer/releases/tag/v0.2.1): new 3D film-reel icon and a stricter EXE self-test.
 
 ### From source
 
