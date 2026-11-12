@@ -142,6 +142,52 @@ def test_all_tags_listing(clips):
     assert any(group == 'File' and tag == 'FileType' for group, tag, _ in rows)
 
 
+def test_music_mode_roundtrip_mp4(clips):
+    from video_tag_writer.constants import DEFAULT_DETECT_FRAMES, DEFAULT_DETECT_DEFAULT
+    values = {'Song Title': 'Ünder Pressure', 'Artist': 'Queen; David Bowie', 'Album': 'Hot Space',
+              'Track': '11 of 11', 'Year': '1981', 'Genre': 'Rock', 'Record Label': 'EMI',
+              'Lyrics': 'Pressure\npushing down on me', 'Director': 'David Mallet'}
+    m = MetadataManager()
+    m.reload_mode('Music')
+    for k, v in values.items():
+        m.set_field(k, v)
+    m.save_to_file(clips['mp4'])
+
+    tags, _ = et.read_metadata(clips['mp4'])
+    assert tags['ItemList:MediaType'] == 'Music Video'
+    assert tags['ItemList:TrackNumber'] == '11 of 11'
+    assert tags['XMP-xmpDM:TrackNumber'] == 11
+    assert et.detect_mode(tags, DEFAULT_DETECT_FRAMES, DEFAULT_DETECT_DEFAULT) == 'Music'
+
+    back = MetadataManager()
+    back.reload_mode('Music')
+    back.load_from_file(clips['mp4'])
+    for label, value in values.items():
+        assert back.get_field(label) == value, label
+
+
+def test_movie_mode_mpg_sidecar_detects(clips):
+    from video_tag_writer.constants import DEFAULT_DETECT_FRAMES, DEFAULT_DETECT_DEFAULT
+    m = MetadataManager()
+    m.reload_mode('Movie')
+    m.set_field('Title', 'The Truman Story')
+    m.set_field('Director', 'A. Director')
+    m.set_field('Genre', 'Documentary')
+    m.save_to_file(clips['mpg'])
+    _, side = et.read_metadata(clips['mpg'])
+    assert side['XMP-xmpDM:Director'] == 'A. Director'
+    assert et.detect_mode(side, DEFAULT_DETECT_FRAMES, DEFAULT_DETECT_DEFAULT) == 'Movie'
+
+
+def test_tv_media_type_value_is_valid(clips):
+    m = MetadataManager()
+    m.reload_mode('TV Episode')
+    m.set_field('Title', 'Pilot')
+    m.save_to_file(clips['mp4'])
+    tags, _ = et.read_metadata(clips['mp4'])
+    assert tags['ItemList:MediaType'] == 'TV Show'   # ExifTool refuses unknown values
+
+
 def test_detect_mode_with_real_tags(clips):
     m = MetadataManager()
     m.reload_mode('TV Episode')

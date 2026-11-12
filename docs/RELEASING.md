@@ -47,7 +47,7 @@ Other options:
 - The working tree is clean, and HEAD equals `origin/<branch>`
 - Tag `vX.Y.Z` doesn't exist locally or on GitHub
 - CHANGELOG.md has the `[X.Y.Z]` header
-- The build passes: 51 tests, the PyInstaller build, and 12 EXE self-test checks
+- The build passes: the full test suite, the PyInstaller build, and every EXE self-test check
 - The EXE's embedded ProductVersion equals `APP_VERSION`
 
 The tag is created on GitHub at the exact commit that was checked and built (`--target <sha>`).

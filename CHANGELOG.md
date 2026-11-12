@@ -5,6 +5,37 @@ All notable changes to the VideoTagWriter project will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## VideoTagWriter [0.2.0] - 2026-11-11 2145 CST
+
+### Added
+- **Movie mode**: Title, Director, Cast, Producer, Studio, Release Date, Genre,
+  Description, Synopsis, Keywords, Copyright.
+- **Music mode** (music videos): Song Title, Artist, Album, Album Artist, Track,
+  Composer, Director, Year, Genre, Record Label, Lyrics, Comment, Copyright.
+- Every field in both modes is written as an iTunes-style tag plus an XMP alias, so
+  MPG/MPEG sidecars keep it. The exceptions are Producer and Album Artist, which have
+  no XMP equivalent and are MP4-only.
+- **Media type**: Movie, Music and TV Episode now silently record what the video is
+  ("Movie", "Music Video", "TV Show"). It goes in the MP4 media-type atom (used by
+  Apple TV/iTunes) and in `XMP-dc:Type`.
+- **Value-based auto-detect**: a detection rule can be `Group:Tag=Value`, with `|`
+  separating alternatives. Movie and Music files, and MPG files with a sidecar, are
+  now recognised on load.
+- **Track field**: accepts `3`, `3 of 12` or `3/12`. MP4 stores `3 of 12`; XMP stores
+  the track number as an integer.
+
+### Changed
+- TV Episode is also detected by its media type, which makes TV MPG sidecars detectable.
+- Saved configurations from 0.1.0 get the new detection rules automatically, with
+  Movie and Music checked before General.
+
+### Notes
+- Record Label uses `ItemList:Publisher`: ExifTool 12.60 silently drops
+  `ItemList:RecordLabelName` (found in a probe write).
+- The "Harry S. Truman Library" creator tag remains specific to Archival Video.
+
+---
+
 ## VideoTagWriter [0.1.0] - 2026-11-11 2015 CST
 
 ### Added

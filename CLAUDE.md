@@ -67,14 +67,19 @@ Dependency flow: constants → config → exiftool_utils → metadata → video_
 | `widgets/manage_modes_dialog.py` | Mode editor (Tag, Aliases, Widget, Max Chars, Options) |
 
 ### Field spec
-`label`, `tag` (ExifTool `Group:Tag`), `widget` (line/text/hidden), `max_chars`, `aliases`, `date_field`, `list_field` (`;`-separated ↔ list), `int_field`, `auto_value` (`__app_version__` sentinel).
+`label`, `tag` (ExifTool `Group:Tag`), `widget` (line/text/hidden), `max_chars`, `aliases`, `date_field`, `list_field` (`;`-separated ↔ list), `int_field`, `track_field` (`3`/`3 of 12`/`3/12`; XMP gets the integer), `auto_value` (`__app_version__` sentinel).
 Read: first non-empty of tag + aliases. Write: value goes to the tag and every alias. For sidecar files, only `XMP-*` tags are written.
+**Verify new ItemList tags with a probe write.** ExifTool 12.60 silently drops some (e.g. `ItemList:RecordLabelName`), with no error.
 
 ### Modes
-| Mode | Detect tag | Notes |
+Detection rules (`DEFAULT_DETECT_FRAMES`) are first-match. Each rule is `|`-separated alternatives, `Group:Tag` (non-empty) or `Group:Tag=Value`. Movie, Music and TV Episode write a hidden media type to both `ItemList:MediaType` and `XMP-dc:Type`, so MPG sidecars are detected too. `config.merge_detect_frames()` adds new built-in rules to saved configs and upgrades `LEGACY_DETECT_FRAMES`.
+
+| Mode | Detect rule | Notes |
 |---|---|---|
-| TV Episode | `ItemList:TVShow` | Most fields are MP4-only |
-| General | `ItemList:Genre` | Archival never writes Genre |
+| TV Episode | `ItemList:TVShow` or media type "TV Show" | Most fields are MP4-only |
+| Movie | media type "Movie" | Producer is MP4-only |
+| Music | media type "Music Video" | Album Artist is MP4-only; Track is a `track_field` |
+| General | `ItemList:Genre` | Archival never writes Genre; must come after Movie/Music |
 | Archival Video | *(default)* | HSTL profile; every field has an XMP tag |
 
 ### Shared modules (external)

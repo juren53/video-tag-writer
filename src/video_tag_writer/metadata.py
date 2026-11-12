@@ -104,6 +104,36 @@ def date_tag_value(tag: str, iso_value: str) -> tuple[str, str]:
 
 
 # ----------------------------------------------------------------------
+# Track numbers
+# ----------------------------------------------------------------------
+
+_TRACK_INPUT = re.compile(r'^\s*(\d+)\s*(?:(?:of|/)\s*(\d+))?\s*$', re.IGNORECASE)
+
+
+def parse_track(value: str) -> tuple[int, int | None]:
+    """Parse '3', '3 of 12' or '3/12' -> (3, 12|None).  Raises ValueError otherwise."""
+    m = _TRACK_INPUT.match(value or '')
+    if not m:
+        raise ValueError(f'"{value}" is not a track number (use 3, 3 of 12 or 3/12)')
+    n = int(m.group(1))
+    total = int(m.group(2)) if m.group(2) else None
+    if n < 1 or (total is not None and total < n):
+        raise ValueError(f'"{value}": track must be at least 1 and not exceed the total')
+    return n, total
+
+
+def track_tag_value(tag: str, value: str) -> tuple[str, object]:
+    """
+    ItemList:TrackNumber takes '3' or '3 of 12' (probe 2026-11-11); XMP track numbers
+    are integers, so they get just the track (a '3 of 12' string would be rejected).
+    """
+    n, total = parse_track(value)
+    if tag.startswith('XMP-'):
+        return tag, n
+    return tag, f"{n} of {total}" if total else str(n)
+
+
+# ----------------------------------------------------------------------
 # Write plan
 # ----------------------------------------------------------------------
 
@@ -239,6 +269,11 @@ class MetadataManager:
                     problems.append(f"{label}: {e}")
             if spec.get('int_field') and not value.isdigit():
                 problems.append(f'{label}: "{value}" must be a whole number')
+            if spec.get('track_field'):
+                try:
+                    parse_track(value)
+                except ValueError as e:
+                    problems.append(f"{label}: {e}")
         return problems
 
     def _resolved_value(self, spec: dict) -> str:
@@ -267,6 +302,8 @@ class MetadataManager:
                     continue
                 if spec.get('date_field'):
                     key, val = date_tag_value(tag, value)
+                elif spec.get('track_field'):
+                    key, val = track_tag_value(tag, value)
                 elif spec.get('list_field'):
                     key = tag
                     val = [p.strip() for p in value.split(';') if p.strip()]

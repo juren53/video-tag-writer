@@ -1,7 +1,7 @@
 """
 VideoTagWriter - Main application entry point.
 
-VideoTagWriter v0.1.0
+VideoTagWriter v0.2.0
 """
 
 import os

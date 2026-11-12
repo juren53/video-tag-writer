@@ -10,10 +10,30 @@ import os
 import json
 import logging
 
-from .constants import (APP_VERSION, APP_TIMESTAMP,
-                        DEFAULT_MODES, DEFAULT_DETECT_FRAMES, DEFAULT_DETECT_DEFAULT)
+from .constants import (APP_VERSION, APP_TIMESTAMP, DEFAULT_MODES, DEFAULT_DETECT_FRAMES,
+                        DEFAULT_DETECT_DEFAULT, LEGACY_DETECT_FRAMES)
 
 logger = logging.getLogger(__name__)
+
+
+def merge_detect_frames(saved: dict | None) -> dict:
+    """
+    Combine saved detection rules with the built-in defaults.
+
+    Detection is first-match, so order matters.  Custom (user-added) modes come first,
+    then the built-in modes in their default order, so modes added in a new release
+    (e.g. Movie/Music in 0.2.0) slot in ahead of General.  A built-in rule the user
+    changed is kept; one still equal to a rule shipped by an earlier version is
+    upgraded to the current default.
+    """
+    saved = dict(saved or {})
+    merged = {name: rule for name, rule in saved.items() if name not in DEFAULT_DETECT_FRAMES}
+    for name, default_rule in DEFAULT_DETECT_FRAMES.items():
+        rule = saved.get(name, default_rule)
+        if rule in LEGACY_DETECT_FRAMES.get(name, []):
+            rule = default_rule
+        merged[name] = rule
+    return merged
 
 
 def _default_config_path() -> str:
@@ -147,7 +167,7 @@ class Config:
             self.keep_backup = data.get('keep_backup', False)
             self.show_poster_frame = data.get('show_poster_frame', True)
             self.auto_detect_mode = data.get('auto_detect_mode', True)
-            self.mode_detect_frames = data.get('mode_detect_frames', dict(DEFAULT_DETECT_FRAMES))
+            self.mode_detect_frames = merge_detect_frames(data.get('mode_detect_frames'))
             self.mode_detect_default = data.get('mode_detect_default', DEFAULT_DETECT_DEFAULT)
 
             # Built-in modes always come from DEFAULT_MODES so schema changes take

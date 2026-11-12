@@ -25,7 +25,8 @@ _C_LABEL, _C_TAG, _C_ALIASES, _C_WIDGET, _C_MAX, _C_OPTIONS = range(6)
 _HEADERS = ["Label", "Tag", "Aliases", "Widget", "Max Chars", "Options"]
 
 # "Options" column tokens <-> spec flags
-_OPTION_FLAGS = {"date": "date_field", "list": "list_field", "int": "int_field"}
+_OPTION_FLAGS = {"date": "date_field", "list": "list_field", "int": "int_field",
+                 "track": "track_field"}
 
 # Keys the table edits directly; anything else in a spec (e.g. auto_value) is
 # carried through untouched via the row's stored original spec.
@@ -95,9 +96,11 @@ class ManageModesDialog(QDialog):
         # Detection rule for the selected mode
         left.addWidget(QLabel("Detect by tag:"))
         self._detect_frame_edit = QLineEdit()
-        self._detect_frame_edit.setPlaceholderText("e.g. ItemList:TVShow")
+        self._detect_frame_edit.setPlaceholderText("e.g. ItemList:MediaType=Movie|XMP-dc:Type=Movie")
         self._detect_frame_edit.setToolTip(
-            "ExifTool tag (Group:Tag) that identifies this mode when non-empty.\n"
+            "Rule that identifies this mode on load. Alternatives are separated by '|':\n"
+            "  Group:Tag          matches when the tag is non-empty\n"
+            "  Group:Tag=Value    matches when the tag equals Value (case-insensitive)\n"
             "Leave empty if this mode is the default fallback."
         )
         self._detect_frame_edit.editingFinished.connect(self._on_detect_frame_changed)
@@ -148,7 +151,7 @@ class ManageModesDialog(QDialog):
         self._field_table.setToolTip(
             "Tag / Aliases: ExifTool Group:Tag names, aliases comma-separated\n"
             "  (ItemList:* = MP4 atoms; XMP-*:* = XMP, also used for MPG/MPEG sidecars)\n"
-            "Options: comma-separated  date, list, int"
+            "Options: comma-separated  date, list, int, track"
         )
         right.addWidget(self._field_table, 1)
 

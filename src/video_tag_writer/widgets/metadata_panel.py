@@ -67,6 +67,8 @@ class MetadataPanel(QWidget):
             lines.append("Separate multiple values with ';'")
         if spec.get('int_field'):
             lines.append("Whole number")
+        if spec.get('track_field'):
+            lines.append("Format: 3, 3 of 12 or 3/12")
         return "\n".join(lines)
 
     def _build_form(self):
@@ -95,6 +97,8 @@ class MetadataPanel(QWidget):
                 widget.setMaxLength(max_chars)
                 if spec.get('date_field'):
                     widget.setPlaceholderText("YYYY-MM-DD")
+                elif spec.get('track_field'):
+                    widget.setPlaceholderText("3 of 12")
                 elif spec.get('list_field'):
                     widget.setPlaceholderText("value; value; …")
                 form.addRow(row_label, widget)

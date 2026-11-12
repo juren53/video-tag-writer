@@ -6,7 +6,7 @@ A desktop application for viewing and editing descriptive metadata in **MP4, MPG
 
 - **MP4 / M4V — metadata embedded in the file.** Fields are written as iTunes-style atoms (seen by players, Windows Explorer and ffprobe) and also as XMP (Dublin Core and other archival schemas).
 - **MPG / MPEG — metadata in an XMP sidecar.** MPEG Program Stream has no slot for descriptive tags, so VTW writes `<name>.xmp` next to the video and never modifies the video itself.
-- **Three built-in modes**: *Archival Video* (HSTL profile), *General*, and *TV Episode*, plus your own modes via **Tools ▸ Manage Modes**.
+- **Five built-in modes**: *Archival Video* (HSTL profile), *General*, *TV Episode*, *Movie* and *Music* (music videos), plus your own modes via **Tools ▸ Manage Modes**.
 - **Auto-detect mode on load** from the file's tags.
 - **Video panel**: embedded cover art, or a poster frame grabbed from the video, plus technical info (container, duration, codecs, resolution, frame rate, scan type, audio, bitrates).
 - **Directory navigation**: Prev / Next (↑ ↓) through all supported videos in a folder.
@@ -26,7 +26,7 @@ A desktop application for viewing and editing descriptive metadata in **MP4, MPG
 
 Download `VTW.exe` from [Releases](https://github.com/juren53/video-tag-writer/releases). It is a single file with ExifTool bundled, and no install is needed.
 
-**Latest release:** [v0.1.0](https://github.com/juren53/video-tag-writer/releases/tag/v0.1.0): initial release.
+**Latest release:** [v0.2.0](https://github.com/juren53/video-tag-writer/releases/tag/v0.2.0): adds Movie and Music modes.
 
 ### From source
 
@@ -89,7 +89,7 @@ Dates are entered as `YYYY`, `YYYY-MM` or `YYYY-MM-DD`.
 ## Development
 
 ```powershell
-python -m pytest tests          # 51 tests; ExifTool integration tests auto-skip if tools are missing
+python -m pytest tests          # ExifTool integration tests auto-skip if tools are missing
 ```
 
 ## Building the Windows EXE

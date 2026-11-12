@@ -243,11 +243,34 @@ def tag_text(tags: dict | None, tag: str, default: str = '') -> str:
     return str(value)
 
 
+def rule_matches(tags: dict | None, rule: str) -> bool:
+    """
+    True if a detection rule matches tags.  A rule is one or more "|"-separated
+    alternatives, each either "Group:Tag" (non-empty) or "Group:Tag=Value"
+    (case-insensitive; for list tags, any one item may match).
+    """
+    if not tags or not rule:
+        return False
+    for alt in rule.split('|'):
+        alt = alt.strip()
+        if not alt:
+            continue
+        if '=' in alt:
+            tag, expected = (s.strip() for s in alt.split('=', 1))
+            expected = expected.casefold()
+            items = [v.strip().casefold() for v in tag_text(tags, tag).split(';')]
+            if expected in items:
+                return True
+        elif tag_text(tags, alt):
+            return True
+    return False
+
+
 def detect_mode(tags, detect_frames: dict, default: str) -> str:
-    """First mode whose detection tag is non-empty in tags wins; else default."""
+    """First mode whose detection rule matches tags wins; else default."""
     if tags:
-        for mode_name, tag in detect_frames.items():
-            if tag and tag_text(tags, tag):
+        for mode_name, rule in detect_frames.items():
+            if rule_matches(tags, rule):
                 return mode_name
     return default
 
