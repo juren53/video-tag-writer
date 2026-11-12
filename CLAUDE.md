@@ -86,7 +86,7 @@ Detection rules (`DEFAULT_DETECT_FRAMES`) are first-match. Each rule is `|`-sepa
 ThemeManager, Icon Manager Module, pyqt-app-info: referenced via `sys.path` as in ATW. `single_instance_guard.py` is vendored.
 
 ## App icon
-`python tools/gen_icon.py` draws the icon from code: an indigo film reel, film unspooling along the bottom, and a pencil writing on it. It uses the TW/ATW flat style and pencil colours. Outputs are `assets/ICON_vtw_source.png` (256 px master), `assets/ICON_vtw.ico` (used by the EXE build), and the IMM set in `resources/icons/` (`app.ico`, `app.png`, `app_NxN.png`). After hand-editing the master in GIMP, run `python tools/gen_icon.py --from-source`.
+`python tools/gen_icon.py` builds the icon: a 3D film-reel photo cutout (`assets/ICON_vtw_reel.png`) with a pencil drawn on top, its tip on the film. The pencil uses the TW/ATW flat style and pencil colours. The cutout is made once by `python tools/cut_reel.py` (needs numpy + scipy) from `assets/ICON_vtw_reel_photo.jpg`; the reel discs are protected by hand-fitted ellipses so the grey drop shadows can be removed. Outputs are `assets/ICON_vtw_source.png` (256 px master), `assets/ICON_vtw.ico` (used by the EXE build), and the IMM set in `resources/icons/` (`app.ico`, `app.png`, `app_NxN.png`). After hand-editing the master in GIMP, run `python tools/gen_icon.py --from-source`.
 
 ## CI
 `.github/workflows/ci.yml` runs the full suite on every push and PR: Linux (Python 3.11 and 3.12, apt ExifTool and ffmpeg) and Windows (Python 3.12, choco ExifTool and ffmpeg). `VTW_REQUIRE_TOOLS=1` turns the integration-test skips into failures, so a green run always includes the real MP4/MPG round-trips.

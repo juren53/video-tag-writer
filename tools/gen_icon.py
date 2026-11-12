@@ -6,13 +6,14 @@ Outputs
   assets/ICON_vtw.ico            multi-size Windows icon (EXE + window)
   resources/icons/app*.png/.ico  Icon Manager Module (IMM) set used at runtime
 
-Design: a film reel with film unspooling along the bottom, and a pencil whose tip
-rests on the film ("writing tags on video").  Drawn in the Tag Writer family style
-— flat fills, heavy black outlines — reusing the ATW/TW pencil colours, with the
-VTW indigo accent on the reel (ATW's accent is teal).
+Design: a 3D film reel with film unspooling to the lower right, and a pencil whose
+tip rests on the film ("writing tags on video").  The reel is a photo cutout,
+assets/ICON_vtw_reel.png, made by tools/cut_reel.py from
+assets/ICON_vtw_reel_photo.jpg.  The pencil is drawn here in the Tag Writer family
+style (flat fills, heavy black outlines, ATW/TW pencil colours).
 
 Usage
-  python tools/gen_icon.py                 # draw from scratch
+  python tools/gen_icon.py                 # reel cutout + pencil
   python tools/gen_icon.py --from-source   # rebuild outputs from an edited
                                            # assets/ICON_vtw_source.png
 """
@@ -28,6 +29,7 @@ ROOT = os.path.normpath(os.path.join(HERE, '..'))
 ASSETS = os.path.join(ROOT, 'assets')
 ICON_DIR = os.path.join(ROOT, 'resources', 'icons')
 SOURCE = os.path.join(ASSETS, 'ICON_vtw_source.png')
+REEL = os.path.join(ASSETS, 'ICON_vtw_reel.png')
 ICO = os.path.join(ASSETS, 'ICON_vtw.ico')
 SIZES = [16, 24, 32, 48, 64, 128, 256]
 
@@ -35,9 +37,6 @@ SS = 4                                   # supersampling factor
 STROKE = 8                               # outline width in 256 px units (TW art ≈ 9)
 
 INK = (0, 0, 0, 255)
-PAPER = (255, 255, 255, 255)
-INDIGO = (48, 63, 159, 255)              # VTW accent
-INDIGO_LIGHT = (197, 202, 233, 255)
 PENCIL_BODY = (255, 188, 83, 255)        # sampled from ATW pencil
 PENCIL_SHADE = (240, 156, 52, 255)
 ERASER = (253, 101, 98, 255)             # sampled from ATW eraser
@@ -45,12 +44,9 @@ FERRULE = (200, 200, 205, 255)
 CONE = (255, 226, 178, 255)              # sharpened wood
 
 # Layout, 256 px units
-REEL_C, REEL_R = (98, 120), 86
-STRIP_Y0, STRIP_Y1 = 190, 236            # film leaves the reel bottom, runs right
-STRIP_X0, STRIP_X1 = 98, 246
-PENCIL_ERASER_END = (231, 32)            # back of the pencil (upper right)
-PENCIL_TIP = (168, 194)                  # point touching the film
-PENCIL_W = 36
+PENCIL_ERASER_END = (248, 40)            # back of the pencil (upper right)
+PENCIL_TIP = (196, 196)                  # point touching the film curl
+PENCIL_W = 28
 
 
 def S(*vals):
@@ -65,45 +61,6 @@ def pts(seq):
 # ----------------------------------------------------------------------
 # Elements
 # ----------------------------------------------------------------------
-
-def draw_strip(d):
-    x0, y0, x1, y1 = STRIP_X0, STRIP_Y0, STRIP_X1, STRIP_Y1
-    d.rounded_rectangle(S(x0, y0, x1, y1), radius=4 * SS, fill=INK)
-    # sprocket holes
-    hole_w, hole_h, pitch = 7, 6, 14
-    x = x0 + 8
-    while x + hole_w <= x1 - 6:
-        for hy in (y0 + 5, y1 - 5 - hole_h):
-            d.rounded_rectangle(S(x, hy, x + hole_w, hy + hole_h), radius=1.5 * SS, fill=PAPER)
-        x += pitch
-    # frames
-    fy0, fy1 = y0 + 15, y1 - 15
-    fw, gap = 34, 8
-    x = x0 + 10
-    while x + fw <= x1 - 8:
-        d.rounded_rectangle(S(x, fy0, x + fw, fy1), radius=2.5 * SS, fill=INDIGO_LIGHT)
-        x += fw + gap
-
-
-def draw_reel(d):
-    cx, cy = REEL_C
-    r = REEL_R
-    d.ellipse(S(cx - r, cy - r, cx + r, cy + r), fill=INDIGO, outline=INK, width=STROKE * SS)
-    # inner rim line (wound film edge)
-    ri = r - 16
-    d.ellipse(S(cx - ri, cy - ri, cx + ri, cy + ri), outline=(32, 42, 112, 255), width=3 * SS)
-    # five spoke holes
-    hole_r, orbit = 17, 44
-    for k in range(5):
-        a = math.radians(-90 + k * 72)
-        hx, hy = cx + orbit * math.cos(a), cy + orbit * math.sin(a)
-        d.ellipse(S(hx - hole_r, hy - hole_r, hx + hole_r, hy + hole_r),
-                  fill=PAPER, outline=INK, width=int(STROKE * 0.75 * SS))
-    # hub
-    hub = 12
-    d.ellipse(S(cx - hub, cy - hub, cx + hub, cy + hub), fill=PAPER, outline=INK, width=int(STROKE * 0.75 * SS))
-    d.ellipse(S(cx - 4, cy - 4, cx + 4, cy + 4), fill=INK)
-
 
 def draw_pencil(d):
     (ex, ey), (tx, ty) = PENCIL_ERASER_END, PENCIL_TIP
@@ -145,11 +102,12 @@ def draw_pencil(d):
 
 
 def draw() -> Image.Image:
-    canvas = Image.new('RGBA', (256 * SS, 256 * SS), (0, 0, 0, 0))
-    d = ImageDraw.Draw(canvas)
-    draw_strip(d)    # behind the reel
-    draw_reel(d)
-    draw_pencil(d)   # in front
+    size = 256 * SS
+    canvas = Image.new('RGBA', (size, size), (0, 0, 0, 0))
+    reel = Image.open(REEL).convert('RGBA')                  # full width, centred vertically
+    reel = reel.resize((size, round(reel.height * size / reel.width)), Image.LANCZOS)
+    canvas.alpha_composite(reel, (0, (size - reel.height) // 2))
+    draw_pencil(ImageDraw.Draw(canvas))                      # in front
     return canvas.resize((256, 256), Image.LANCZOS)
 
 
