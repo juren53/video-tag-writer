@@ -22,6 +22,7 @@ python -m pytest tests          # tests; integration tests need ExifTool + ffmpe
 - ThemeManager / Icon Manager must be on `pathex`, because they are runtime `sys.path` imports (ATW v0.7.14a crash).
 - `runtime_tmpdir` is `%LOCALAPPDATA%\video-tag-writer\runtime`; a CWD-relative one breaks "Open with" launches (ATW issue #6).
 - `build_exe.ps1` runs `VTW.exe --self-test build\selftest.json` and fails the build on any failed check. When adding a runtime-imported module or a bundled data file, add a check to `run_self_test()` in `src/main.py`.
+- Runtime `sys.path` insertions of source folders (`~/Projects/ThemeManager`, IMM) must be skipped when `sys.frozen` is set. Otherwise the EXE silently uses the source copy on the build machine, and a module missing from the bundle goes unnoticed. The self-test's "`<module>` is bundled" checks catch this.
 
 ## Critical Project Rules
 

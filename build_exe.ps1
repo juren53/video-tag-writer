@@ -85,7 +85,16 @@ Step "Self-testing the EXE"
 $Report = Join-Path $ScriptDir "build\selftest.json"
 Remove-Item $Report -ErrorAction SilentlyContinue
 $proc = Start-Process -FilePath $ExePath -ArgumentList @("--self-test", "`"$Report`"") `
-                      -Wait -PassThru -WindowStyle Hidden
+                      -PassThru -WindowStyle Hidden
+# A crash at import time shows PyInstaller's "Unhandled exception" dialog and never exits
+$proc | Wait-Process -Timeout 120 -ErrorAction SilentlyContinue
+if (-not $proc.HasExited) {
+    # Kill the bootloader and its child (onefile runs the app in a child process)
+    Get-CimInstance Win32_Process -Filter "ParentProcessId=$($proc.Id)" |
+        ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+    Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+    Fail "Self-test did not finish in 120 s; the EXE probably crashed at startup (error dialog). Run dist\VTW.exe to see the error."
+}
 if (-not (Test-Path $Report)) {
     Fail "Self-test produced no report (exit $($proc.ExitCode)) — the EXE probably crashed at startup. Rebuild with console=True in the spec to see the traceback."
 }

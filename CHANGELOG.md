@@ -5,6 +5,17 @@ All notable changes to the VideoTagWriter project will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## VideoTagWriter [Unreleased]
+
+### Changed
+- The EXE no longer adds `~/Projects/ThemeManager` or `~/Projects/Icon_Manager_Module`
+  to its import path; it uses only its bundled copies. On the build machine that
+  fallback could hide a module missing from the EXE (as in ATW v0.7.14a).
+- The EXE self-test now also checks that each runtime-imported module loads from
+  inside the EXE, and that README/CHANGELOG are in the bundle itself.
+- `build_exe.ps1`: a startup crash during the self-test (PyInstaller's error dialog)
+  no longer hangs the build; it fails after 120 s and the process is closed.
+
 ## VideoTagWriter [0.2.0] - 2026-11-11 2145 CST
 
 ### Added

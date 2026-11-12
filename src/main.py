@@ -18,8 +18,11 @@ logger = logging.getLogger(__name__)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # IMM setup at module level so _init_win32() fires before QApplication is created.
+# The frozen EXE must use only its bundled copy: a source-folder fallback hides a
+# module missing from the bundle on the build machine (ATW v0.7.14a).
 _IMM_PATH = os.path.expanduser("~/Projects/Icon_Manager_Module")
-if os.path.isdir(_IMM_PATH) and _IMM_PATH not in sys.path:
+if (not getattr(sys, 'frozen', False)
+        and os.path.isdir(_IMM_PATH) and _IMM_PATH not in sys.path):
     sys.path.insert(0, _IMM_PATH)
 
 _app_icons = None
@@ -160,10 +163,20 @@ def run_self_test(report_path: str) -> int:
               'checks': {}, 'info': {}}
     checks = report['checks']
 
+    def _in_bundle(path: str) -> bool:
+        return os.path.normcase(os.path.abspath(path)).startswith(
+            os.path.normcase(os.path.abspath(bundle)) + os.sep)
+
+    # Runtime sys.path imports are invisible to PyInstaller's analysis (ATW v0.7.14a
+    # crash), and must load from the bundle, not from a source folder on this machine.
     for mod in ('theme_manager', 'icon_loader', 'pyqt_app_info', 'exiftool', 'PyQt6.QtWidgets'):
         try:
-            importlib.import_module(mod)
+            m = importlib.import_module(mod)
             checks[f'import {mod}'] = True
+            where = getattr(m, '__file__', None) or ''
+            report['info'][f'{mod} from'] = where
+            if frozen:
+                checks[f'{mod} is bundled'] = bool(where) and _in_bundle(where)
         except Exception as e:
             checks[f'import {mod}'] = False
             report['info'][f'import {mod} error'] = repr(e)
@@ -187,8 +200,10 @@ def run_self_test(report_path: str) -> int:
     finally:
         exiftool_utils.shutdown()
 
+    # Docs must be in the bundle itself (_find_file also falls back to the source tree)
     for doc in ('README.md', 'CHANGELOG.md'):
-        checks[f'{doc} available'] = _Help._find_file(doc) is not None
+        checks[f'{doc} available'] = os.path.isfile(os.path.join(bundle, doc)) if frozen \
+            else _Help._find_file(doc) is not None
 
     # Qt platform plugin + full window construction (never shown).  The last-file
     # restore is suppressed in memory only, and the window is never closed through

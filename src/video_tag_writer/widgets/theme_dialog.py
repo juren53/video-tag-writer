@@ -10,7 +10,8 @@ from PyQt6.QtCore import Qt
 
 import sys, os
 _TM_PATH = os.path.expanduser("~/Projects/ThemeManager")
-if os.path.isdir(_TM_PATH) and _TM_PATH not in sys.path:
+if (not getattr(sys, 'frozen', False)   # the EXE uses its bundled copy (see theme.py)
+        and os.path.isdir(_TM_PATH) and _TM_PATH not in sys.path):
     sys.path.insert(0, _TM_PATH)
 from theme_manager import get_theme_registry, ThemeCategory
 

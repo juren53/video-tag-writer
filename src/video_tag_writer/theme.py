@@ -11,8 +11,11 @@ from __future__ import annotations
 import os
 import sys
 
+# Source runs only: the frozen EXE must use its bundled copy, or a module missing from
+# the bundle goes unnoticed on the build machine (ATW v0.7.14a).
 _TM_PATH = os.path.expanduser("~/Projects/ThemeManager")
-if os.path.isdir(_TM_PATH) and _TM_PATH not in sys.path:
+if (not getattr(sys, 'frozen', False)
+        and os.path.isdir(_TM_PATH) and _TM_PATH not in sys.path):
     sys.path.insert(0, _TM_PATH)
 
 from theme_manager import (  # noqa: F401
