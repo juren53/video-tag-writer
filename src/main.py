@@ -139,10 +139,91 @@ class MainWindow(NavigationMixin, FileOpsMixin, MenuMixin, ThemeMixin, HelpMixin
 
 
 # ----------------------------------------------------------------------
+# Self-test (used by build_exe.ps1 to verify the frozen bundle)
+# ----------------------------------------------------------------------
+
+def run_self_test(report_path: str) -> int:
+    """
+    Verify the (frozen) build without showing a window: every shared module is
+    importable, ExifTool starts and is the bundled copy, and docs are bundled.
+    Writes a JSON report to report_path; returns 0 if all required checks pass.
+    A windowed EXE has no console, hence the report file instead of stdout.
+    """
+    import importlib
+    import json
+    from video_tag_writer.help import HelpMixin as _Help
+    from video_tag_writer.video_utils import find_ff_tools
+
+    frozen = bool(getattr(sys, 'frozen', False))
+    bundle = getattr(sys, '_MEIPASS', '')
+    report = {'app': f"{APP_NAME} {APP_VERSION}", 'frozen': frozen, 'bundle_dir': bundle,
+              'checks': {}, 'info': {}}
+    checks = report['checks']
+
+    for mod in ('theme_manager', 'icon_loader', 'pyqt_app_info', 'exiftool', 'PyQt6.QtWidgets'):
+        try:
+            importlib.import_module(mod)
+            checks[f'import {mod}'] = True
+        except Exception as e:
+            checks[f'import {mod}'] = False
+            report['info'][f'import {mod} error'] = repr(e)
+
+    try:
+        ver = exiftool_utils.check_exiftool_available()
+        path, _ = exiftool_utils.exiftool_info()
+        report['info']['exiftool'] = f"{ver}  ({path})"
+        checks['exiftool starts'] = True
+        if frozen:
+            checks['exiftool is bundled copy'] = os.path.normcase(os.path.dirname(path)) == os.path.normcase(bundle)
+        # Read the running executable itself — proves ExifTool can parse files end to end
+        tags = exiftool_utils.read_tags(sys.executable)
+        report['info']['self FileType'] = tags.get('File:FileType')
+        if frozen:
+            report['info']['self ProductVersion'] = tags.get('EXE:ProductVersion')
+            checks['exe version info'] = str(tags.get('EXE:ProductVersion')) == APP_VERSION
+    except Exception as e:
+        checks['exiftool starts'] = False
+        report['info']['exiftool error'] = repr(e)
+    finally:
+        exiftool_utils.shutdown()
+
+    for doc in ('README.md', 'CHANGELOG.md'):
+        checks[f'{doc} available'] = _Help._find_file(doc) is not None
+
+    # Qt platform plugin + full window construction (never shown).  The last-file
+    # restore is suppressed in memory only, and the window is never closed through
+    # closeEvent, so the user's config file is not rewritten.
+    try:
+        app = QApplication.instance() or QApplication([sys.argv[0]])
+        report['info']['qt platform'] = app.platformName()
+        config.selected_file = None
+        window = MainWindow()
+        checks['main window builds'] = window.metadata_panel is not None and window.video_panel is not None
+        window.deleteLater()
+    except Exception as e:
+        checks['main window builds'] = False
+        report['info']['main window error'] = repr(e)
+    finally:
+        exiftool_utils.shutdown()
+
+    ffmpeg, ffprobe = find_ff_tools('')
+    report['info']['ffmpeg'] = ffmpeg or 'not found (optional)'
+    report['info']['ffprobe'] = ffprobe or 'not found (optional)'
+
+    report['passed'] = all(checks.values())
+    with open(report_path, 'w', encoding='utf-8') as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
+    return 0 if report['passed'] else 1
+
+
+# ----------------------------------------------------------------------
 # Application entry point
 # ----------------------------------------------------------------------
 
 def main():
+    if len(sys.argv) >= 3 and sys.argv[1] == '--self-test':
+        return run_self_test(sys.argv[2])
+
     app = QApplication(sys.argv)
     app.setApplicationName(APP_NAME)
     app.setOrganizationName(APP_ORGANIZATION)

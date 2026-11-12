@@ -14,7 +14,14 @@ Why ExifTool, and the rules below: `notes/TOOL_COMPARISON_mutagen-vs-ffmpeg-vs-e
 .\run.ps1                       # venv + deps + launch
 python src/main.py [file]       # direct (venv active)
 python -m pytest tests          # tests; integration tests need ExifTool + ffmpeg
+.\build_exe.ps1 [-IncludeFFmpeg] [-ExifTool path] [-SkipTests]   # -> dist\video-tag-writer.exe
 ```
+
+### EXE build notes
+- `video-tag-writer.spec` bundles `exiftool.exe` (required; `VTW_EXIFTOOL` env or PATH or `~/bin`), and ffmpeg/ffprobe only when `VTW_BUNDLE_FFMPEG=1`. Bundled tools are excluded from UPX.
+- ThemeManager / Icon Manager must be on `pathex`, because they are runtime `sys.path` imports (ATW v0.7.14a crash).
+- `runtime_tmpdir` is `%LOCALAPPDATA%\video-tag-writer\runtime`; a CWD-relative one breaks "Open with" launches (ATW issue #6).
+- `build_exe.ps1` runs `video-tag-writer.exe --self-test build\selftest.json` and fails the build on any failed check. When adding a runtime-imported module or a bundled data file, add a check to `run_self_test()` in `src/main.py`.
 
 ## Critical Project Rules
 
@@ -74,6 +81,5 @@ Read: first non-empty of tag + aliases. Write: value goes to the tag and every a
 ThemeManager, Icon Manager Module, pyqt-app-info: referenced via `sys.path` as in ATW. `single_instance_guard.py` is vendored.
 
 ## Not yet done
-- PyInstaller spec / `build_exe.ps1` (must bundle exiftool.exe; optionally ffmpeg/ffprobe)
-- App icon (`resources/icons/` is empty; IMM is skipped when it has no icons)
+- App icon (`assets/ICON_vtw.ico` and `resources/icons/` are empty; the EXE uses the default icon and IMM is skipped)
 - GitHub repo / CI workflow

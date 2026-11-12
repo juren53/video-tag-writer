@@ -33,6 +33,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   silently read `abc` as hex (2748).
 - **Tools ▸ Keep Backup on Save** (ExifTool `*_original` files; off by default) and
   **Tools ▸ Tool Locations** (which ExifTool / ffmpeg / ffprobe are in use).
+- **Windows EXE build**: `build_exe.ps1` + `video-tag-writer.spec` +
+  `generate_version_info.py`. ExifTool is bundled, and ffmpeg/ffprobe can be added with
+  `-IncludeFFmpeg`. A test gate runs before the build, and afterwards the built EXE runs
+  `--self-test` (shared-module imports, bundled ExifTool, version resource, bundled docs,
+  Qt main window). Output: `dist\video-tag-writer.exe`, ~41 MB.
 - Test suite: 51 tests, including end-to-end ExifTool round-trips on ffmpeg-generated
   MP4 and MPG clips (skipped automatically when the tools are absent).
 

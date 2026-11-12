@@ -84,6 +84,18 @@ Dates are entered as `YYYY`, `YYYY-MM` or `YYYY-MM-DD`.
 python -m pytest tests          # 51 tests; ExifTool integration tests auto-skip if tools are missing
 ```
 
+## Building the Windows EXE
+
+```powershell
+.\build_exe.ps1                  # -> dist\video-tag-writer.exe (~41 MB, ExifTool bundled)
+.\build_exe.ps1 -IncludeFFmpeg   # also bundle ffmpeg + ffprobe (much larger)
+.\build_exe.ps1 -ExifTool C:\tools\exiftool.exe   # bundle a specific ExifTool
+```
+
+The script creates or updates `venv\`, runs the test suite, generates the EXE version resource, and builds with `video-tag-writer.spec`. It then runs the built EXE with `--self-test`, which checks that the shared modules, the bundled ExifTool, the version resource, the docs, and the Qt main window all work inside the frozen bundle. The build fails if any check fails.
+
+The build needs `~/Projects/ThemeManager` and `~/Projects/Icon_Manager_Module`, plus an `exiftool.exe`. That can be the single-file build (≤ 12.87) or the newer exe + `exiftool_files` folder.
+
 Background on the choice of ExifTool over Mutagen and FFmpeg:
 [notes/TOOL_COMPARISON_mutagen-vs-ffmpeg-vs-exiftool-video.md](notes/TOOL_COMPARISON_mutagen-vs-ffmpeg-vs-exiftool-video.md).
 
