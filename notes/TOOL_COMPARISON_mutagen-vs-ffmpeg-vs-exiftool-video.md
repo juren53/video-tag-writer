@@ -1,6 +1,6 @@
 # Video Metadata Tool Comparison: Mutagen vs FFmpeg vs ExifTool
 
-**Project:** Video Tag Writer (VTW)
+**Project:** VideoTagWriter (VTW)
 **Date:** 2026-11-11 1942 CST
 **Target formats:** MP4 (incl. M4V), MPG, MPEG
 **Design pattern:** audio-tag-writer (ATW, Mutagen) · photo tag-writer (PTW, ExifTool via PyExifTool)

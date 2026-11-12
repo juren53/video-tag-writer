@@ -1,5 +1,5 @@
 """
-Video Tag Writer - Configuration management.
+VideoTagWriter - Configuration management.
 
 Persists to ~/.video_tag_writer_config.json.  The VTW_CONFIG_FILE environment
 variable overrides the location (used by the test suite so tests never touch the

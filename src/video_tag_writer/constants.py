@@ -1,5 +1,5 @@
 """
-Video Tag Writer - Constants, version info, and default mode definitions.
+VideoTagWriter - Constants, version info, and default mode definitions.
 
 Field spec format (interpreted by MetadataManager):
 
@@ -26,7 +26,7 @@ See notes/TOOL_COMPARISON_mutagen-vs-ffmpeg-vs-exiftool-video.md for the probe r
 behind these choices.
 """
 
-APP_NAME = "Video Tag Writer"
+APP_NAME = "VideoTagWriter"
 APP_VERSION = "0.1.0"
 APP_TIMESTAMP = "2026-11-11 2015 CST"
 APP_ORGANIZATION = "SynchroSoft"

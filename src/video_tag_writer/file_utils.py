@@ -1,5 +1,5 @@
 """
-Video Tag Writer - Video file scanning utilities.
+VideoTagWriter - Video file scanning utilities.
 """
 
 import os

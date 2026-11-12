@@ -49,12 +49,12 @@ VSVersionInfo(
         StringTable(
           u'040904B0',
           [StringStruct(u'CompanyName',      u'{org}'),
-           StringStruct(u'FileDescription',  u'Video Tag Writer'),
+           StringStruct(u'FileDescription',  u'VideoTagWriter'),
            StringStruct(u'FileVersion',      u'{version}'),
            StringStruct(u'InternalName',     u'VTW'),
            StringStruct(u'LegalCopyright',   u'Copyright (c) {year} {org}'),
            StringStruct(u'OriginalFilename', u'VTW.exe'),
-           StringStruct(u'ProductName',      u'Video Tag Writer'),
+           StringStruct(u'ProductName',      u'VideoTagWriter'),
            StringStruct(u'ProductVersion',   u'{version}')])
       ]),
     VarFileInfo([VarStruct(u'Translation', [0x0409, 1200])])

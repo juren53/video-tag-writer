@@ -1,5 +1,5 @@
 """
-Video Tag Writer - ExifTool wrapper (the VTW counterpart of ATW's mutagen_utils).
+VideoTagWriter - ExifTool wrapper (the VTW counterpart of ATW's mutagen_utils).
 
 One persistent ExifTool process (PyExifTool, -stay_open) serves the whole session.
 

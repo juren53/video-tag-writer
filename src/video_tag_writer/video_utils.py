@@ -1,5 +1,5 @@
 """
-Video Tag Writer - Technical stream info and poster frames (ATW's audio_utils counterpart).
+VideoTagWriter - Technical stream info and poster frames (ATW's audio_utils counterpart).
 
 ffprobe/ffmpeg are optional helpers.  When present they supply the richest technical
 info (codecs, duration for MPG) and the poster frame shown in the VideoPanel; when

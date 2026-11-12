@@ -1,4 +1,4 @@
-# Releasing Video Tag Writer
+# Releasing VideoTagWriter
 
 A release is a GitHub release `vX.Y.Z` with `VTW.exe` and its `.sha256` attached.
 `release.ps1` does the checking, building and publishing. You only prepare the version and notes.
@@ -9,7 +9,7 @@ A release is a GitHub release `vX.Y.Z` with `VTW.exe` and its `.sha256` attached
    Also update the version comment in `src/main.py` and `video-tag-writer.spec`.
 2. **CHANGELOG.md**: add the entry. `release.ps1` refuses to run without it.
    ```
-   ## Video Tag Writer [X.Y.Z] - YYYY-MM-DD HHMM CST
+   ## VideoTagWriter [X.Y.Z] - YYYY-MM-DD HHMM CST
    ```
 3. **README.md**: point the "Latest release" line at the new tag (`releases/tag/vX.Y.Z`).
    The script warns if you forget.
@@ -58,7 +58,7 @@ The tag is created on GitHub at the exact commit that was checked and built (`--
 .\build_exe.ps1
 (Get-FileHash dist\VTW.exe -Algorithm SHA256).Hash.ToLower()
 gh release create vX.Y.Z dist\VTW.exe --repo juren53/video-tag-writer `
-   --target master --title "Video Tag Writer vX.Y.Z" --notes-file <notes.md>
+   --target master --title "VideoTagWriter vX.Y.Z" --notes-file <notes.md>
 ```
 
 ## Fixing a release

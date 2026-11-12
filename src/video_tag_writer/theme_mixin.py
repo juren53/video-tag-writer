@@ -1,5 +1,5 @@
 """
-Video Tag Writer - ThemeMixin: apply_theme, zoom_ui, dark mode toggle.
+VideoTagWriter - ThemeMixin: apply_theme, zoom_ui, dark mode toggle.
 """
 
 import logging

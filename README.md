@@ -1,4 +1,4 @@
-# Video Tag Writer
+# VideoTagWriter
 
 A desktop application for viewing and editing descriptive metadata in **MP4, MPG and MPEG** video files. It is built for archival workflows (the HSTL profile), and the design follows [Audio Tag Writer](https://github.com/juren53/audio-tag-writer).
 
@@ -67,7 +67,7 @@ Keep the two files together when copying or archiving.
 | NAC URL | `XMP-dc:Relation` | |
 | Institution ID | `XMP-photoshop:TransmissionReference` | |
 | *(hidden)* Artist | `ItemList:Artist` = "Harry S. Truman Library" | `XMP-dc:Creator` |
-| *(hidden)* Tagging Software | `XMP-xmp:CreatorTool` = "Video Tag Writer vX.Y.Z" | |
+| *(hidden)* Tagging Software | `XMP-xmp:CreatorTool` = "VideoTagWriter vX.Y.Z" | |
 
 Dates are entered as `YYYY`, `YYYY-MM` or `YYYY-MM-DD`.
 

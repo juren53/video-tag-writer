@@ -1,5 +1,5 @@
 """
-Video Tag Writer - MetadataManager: field-spec driven read/write via ExifTool.
+VideoTagWriter - MetadataManager: field-spec driven read/write via ExifTool.
 
 Same contract as ATW's MetadataManager (label-keyed values, mode field specs, alias
 fan-out on save, alias fallback on read, JSON export/import).  The tag access layer

@@ -1,5 +1,5 @@
 """
-Video Tag Writer - NavigationMixin: open, prev/next, load_file, recent menus.
+VideoTagWriter - NavigationMixin: open, prev/next, load_file, recent menus.
 """
 
 import os

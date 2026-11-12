@@ -1,4 +1,4 @@
-# Video Tag Writer launcher — creates/validates venv, installs deps, runs app.
+# VideoTagWriter launcher — creates/validates venv, installs deps, runs app.
 
 $ErrorActionPreference = "Stop"
 

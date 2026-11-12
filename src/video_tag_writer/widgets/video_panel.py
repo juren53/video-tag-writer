@@ -1,5 +1,5 @@
 """
-Video Tag Writer - VideoPanel widget (cover art / poster frame + technical info).
+VideoTagWriter - VideoPanel widget (cover art / poster frame + technical info).
 
 The VTW counterpart of ATW's AudioPanel.  The image area shows, in priority order:
   1. embedded MP4 cover art ('covr' atom), or

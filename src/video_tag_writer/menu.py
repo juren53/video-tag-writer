@@ -1,5 +1,5 @@
 """
-Video Tag Writer - MenuMixin: create_menu_bar() and create_toolbar().
+VideoTagWriter - MenuMixin: create_menu_bar() and create_toolbar().
 """
 
 from PyQt6.QtWidgets import QToolBar, QLabel, QComboBox

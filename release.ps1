@@ -1,4 +1,4 @@
-# Video Tag Writer - GitHub release script
+# VideoTagWriter - GitHub release script
 #
 # Publishes the version in src/video_tag_writer/constants.py (APP_VERSION) as a GitHub
 # release "vX.Y.Z" with dist\VTW.exe (+ a .sha256 file) attached.
@@ -50,7 +50,7 @@ $constants = Get-Content "src\video_tag_writer\constants.py" -Raw -Encoding UTF8
 if ($constants -notmatch '(?m)^APP_VERSION\s*=\s*"([^"]+)"') { Fail "APP_VERSION not found in constants.py" }
 $Version = $Matches[1]
 $Tag = "v$Version"
-Write-Host "Releasing Video Tag Writer $Tag" -ForegroundColor White
+Write-Host "Releasing VideoTagWriter $Tag" -ForegroundColor White
 
 # ── Pre-flight checks ────────────────────────────────────────────
 Step "Pre-flight checks"
@@ -79,8 +79,8 @@ if ($LASTEXITCODE -eq 0) { Fail "Release $Tag already exists on GitHub." }
 Ok "tag/release $Tag not used yet"
 
 $changelog = Get-Content "CHANGELOG.md" -Raw -Encoding UTF8
-$hdr = "(?m)^## Video Tag Writer \[" + [regex]::Escape($Version) + "\] - .+$"
-if ($changelog -notmatch $hdr) { Fail "CHANGELOG.md has no '## Video Tag Writer [$Version] - YYYY-MM-DD HHMM CST' header." }
+$hdr = "(?m)^## VideoTagWriter \[" + [regex]::Escape($Version) + "\] - .+$"
+if ($changelog -notmatch $hdr) { Fail "CHANGELOG.md has no '## VideoTagWriter [$Version] - YYYY-MM-DD HHMM CST' header." }
 Ok "CHANGELOG.md has a $Version entry"
 
 $readme = Get-Content "README.md" -Raw -Encoding UTF8
@@ -170,7 +170,7 @@ if (-not $Yes) {
 Step "Publishing"
 $ghArgs = @("release", "create", $Tag, $ExePath, $shaOut,
           "--repo", $Repo, "--target", $local,
-          "--title", "Video Tag Writer $Tag", "--notes-file", $notesOut)
+          "--title", "VideoTagWriter $Tag", "--notes-file", $notesOut)
 if ($Draft) { $ghArgs += "--draft" }
 & gh @ghArgs
 if ($LASTEXITCODE -ne 0) { Fail "gh release create failed." }

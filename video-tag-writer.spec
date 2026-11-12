@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-# PyInstaller spec for Video Tag Writer
+# PyInstaller spec for VideoTagWriter
 # Build: .\build_exe.ps1   (or: pyinstaller video-tag-writer.spec)
 # Version: 0.1.0
 #

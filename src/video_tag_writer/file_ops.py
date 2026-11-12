@@ -1,5 +1,5 @@
 """
-Video Tag Writer - FileOpsMixin: save, export/import, rename, view-all-tags, modes.
+VideoTagWriter - FileOpsMixin: save, export/import, rename, view-all-tags, modes.
 """
 
 import os

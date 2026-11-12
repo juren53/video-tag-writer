@@ -1,4 +1,4 @@
-# Video Tag Writer - PyInstaller build script
+# VideoTagWriter - PyInstaller build script
 #
 # Usage:
 #   .\build_exe.ps1                       # standard build (bundles ExifTool)

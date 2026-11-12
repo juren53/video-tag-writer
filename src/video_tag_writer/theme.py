@@ -1,10 +1,10 @@
 """
-Video Tag Writer - ThemeManager integration.
+VideoTagWriter - ThemeManager integration.
 
 Sets up the ThemeManager module path and re-exports the helpers the app needs.
 Registers four VTW-specific themes (Warm Light, High Contrast, Monokai,
 GitHub Dark) into the global registry alongside the six built-in themes,
-giving Video Tag Writer ten themes in total.
+giving VideoTagWriter ten themes in total.
 """
 
 from __future__ import annotations
@@ -44,7 +44,7 @@ LEGACY_NAME_MAP: dict[str, str] = {
 
 
 def _register_vtw_themes() -> None:
-    """Register Video Tag Writer-specific themes into the global ThemeRegistry."""
+    """Register VideoTagWriter-specific themes into the global ThemeRegistry."""
     registry = get_theme_registry()
 
     registry.register_theme(Theme(

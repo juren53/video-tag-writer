@@ -1,5 +1,5 @@
 """
-Video Tag Writer - HelpMixin: About and Changelog dialogs.
+VideoTagWriter - HelpMixin: About and Changelog dialogs.
 """
 
 import os

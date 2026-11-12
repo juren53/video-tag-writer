@@ -1,5 +1,5 @@
 """
-Generate the Video Tag Writer icon set.
+Generate the VideoTagWriter icon set.
 
 Outputs
   assets/ICON_vtw_source.png     256 px master (GIMP-editable)

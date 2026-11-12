@@ -1,5 +1,5 @@
 """
-Video Tag Writer - ManageModesDialog: edit mode definitions.
+VideoTagWriter - ManageModesDialog: edit mode definitions.
 """
 
 import copy

@@ -1,5 +1,5 @@
 """
-Video Tag Writer - MetadataPanel widget (dynamic metadata form).
+VideoTagWriter - MetadataPanel widget (dynamic metadata form).
 """
 
 import logging

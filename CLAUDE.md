@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Video Tag Writer (VTW) is a PyQt6 desktop application for viewing and editing descriptive metadata in **MP4, M4V, MPG and MPEG** video files. It is modeled on audio-tag-writer (ATW, `~/Projects/audio-tag-writer`) and keeps ATW's architecture. The metadata layer is **ExifTool** (via PyExifTool), not Mutagen. Current version: v0.1.0.
+VideoTagWriter (VTW) is a PyQt6 desktop application for viewing and editing descriptive metadata in **MP4, M4V, MPG and MPEG** video files. It is modeled on audio-tag-writer (ATW, `~/Projects/audio-tag-writer`) and keeps ATW's architecture. The metadata layer is **ExifTool** (via PyExifTool), not Mutagen. Current version: v0.1.0.
 
 Why ExifTool, and the rules below: `notes/TOOL_COMPARISON_mutagen-vs-ffmpeg-vs-exiftool-video.md` (includes probe test results).
 
@@ -27,7 +27,7 @@ python -m pytest tests          # tests; integration tests need ExifTool + ffmpe
 
 ### Timezone Convention
 **ALL timestamps MUST use Central Time USA (CST/CDT), NEVER UTC** — changelog headers, `APP_TIMESTAMP`, docs.
-Changelog header format: `## Video Tag Writer [X.Y.Z] - YYYY-MM-DD HHMM CST`.
+Changelog header format: `## VideoTagWriter [X.Y.Z] - YYYY-MM-DD HHMM CST`.
 
 ### Version Numbering
 `v0.X.Y` releases, `v0.X.Ya/b` point releases. Update: `constants.py` (APP_VERSION, APP_TIMESTAMP), `src/main.py` header, `README.md`, `CHANGELOG.md`.

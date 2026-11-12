@@ -1,4 +1,4 @@
-"""Video Tag Writer — PyQt6 metadata viewer/editor for MP4, MPG and MPEG video files."""
+"""VideoTagWriter — PyQt6 metadata viewer/editor for MP4, MPG and MPEG video files."""
 
 import datetime as _dt, time as _time
 

@@ -1,5 +1,5 @@
 """
-Video Tag Writer - WindowMixin: key events, geometry save/restore, close handler.
+VideoTagWriter - WindowMixin: key events, geometry save/restore, close handler.
 """
 
 import logging

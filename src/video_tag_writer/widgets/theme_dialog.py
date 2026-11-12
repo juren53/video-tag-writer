@@ -1,5 +1,5 @@
 """
-Video Tag Writer - Theme selection dialog.
+VideoTagWriter - Theme selection dialog.
 """
 
 from PyQt6.QtWidgets import (
