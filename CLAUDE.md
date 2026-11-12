@@ -88,5 +88,5 @@ ThemeManager, Icon Manager Module, pyqt-app-info: referenced via `sys.path` as i
 ## App icon
 `python tools/gen_icon.py` draws the icon from code: an indigo film reel, film unspooling along the bottom, and a pencil writing on it. It uses the TW/ATW flat style and pencil colours. Outputs are `assets/ICON_vtw_source.png` (256 px master), `assets/ICON_vtw.ico` (used by the EXE build), and the IMM set in `resources/icons/` (`app.ico`, `app.png`, `app_NxN.png`). After hand-editing the master in GIMP, run `python tools/gen_icon.py --from-source`.
 
-## Not yet done
-- CI workflow
+## CI
+`.github/workflows/ci.yml` runs the full suite on every push and PR: Linux (Python 3.11 and 3.12, apt ExifTool and ffmpeg) and Windows (Python 3.12, choco ExifTool and ffmpeg). `VTW_REQUIRE_TOOLS=1` turns the integration-test skips into failures, so a green run always includes the real MP4/MPG round-trips.

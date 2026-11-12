@@ -1,5 +1,7 @@
 # VideoTagWriter
 
+[![CI](https://github.com/juren53/video-tag-writer/actions/workflows/ci.yml/badge.svg)](https://github.com/juren53/video-tag-writer/actions/workflows/ci.yml)
+
 A desktop application for viewing and editing descriptive metadata in **MP4, MPG and MPEG** video files. It is built for archival workflows (the HSTL profile), and the design follows [Audio Tag Writer](https://github.com/juren53/audio-tag-writer).
 
 ## Features

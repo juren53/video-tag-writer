@@ -39,10 +39,21 @@ def _exiftool_ok() -> bool:
         return False
 
 
+# CI sets VTW_REQUIRE_TOOLS=1: a missing ExifTool/ffmpeg must fail the run instead of
+# silently skipping the integration tests (a green run that tested nothing).
+_REQUIRE_TOOLS = os.environ.get("VTW_REQUIRE_TOOLS") == "1"
+
+
+def _unavailable(reason: str):
+    if _REQUIRE_TOOLS:
+        pytest.fail(f"{reason} (VTW_REQUIRE_TOOLS=1)", pytrace=False)
+    pytest.skip(reason)
+
+
 @pytest.fixture(scope="session")
 def exiftool_available():
     if not _exiftool_ok():
-        pytest.skip("ExifTool / PyExifTool not available")
+        _unavailable("ExifTool / PyExifTool not available")
 
 
 @pytest.fixture(scope="session")
@@ -51,7 +62,7 @@ def clip_dir(tmp_path_factory, exiftool_available):
     from video_tag_writer.video_utils import find_ff_tools
     ffmpeg, _ = find_ff_tools('')
     if not ffmpeg:
-        pytest.skip("ffmpeg not available to generate test clips")
+        _unavailable("ffmpeg not available to generate test clips")
     d = tmp_path_factory.mktemp("clips")
     src = ["-f", "lavfi", "-i", "testsrc=duration=2:size=320x240:rate=25",
            "-f", "lavfi", "-i", "sine=frequency=440:duration=2"]
@@ -63,7 +74,7 @@ def clip_dir(tmp_path_factory, exiftool_available):
         res = subprocess.run([ffmpeg, "-v", "error", "-y", *src, *codec, str(d / name)],
                              capture_output=True)
         if res.returncode != 0 or not (d / name).exists():
-            pytest.skip(f"ffmpeg could not generate {name}: {res.stderr[-300:]!r}")
+            _unavailable(f"ffmpeg could not generate {name}: {res.stderr[-300:]!r}")
     return d
 
 
