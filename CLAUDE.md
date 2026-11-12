@@ -80,6 +80,8 @@ Read: first non-empty of tag + aliases. Write: value goes to the tag and every a
 ### Shared modules (external)
 ThemeManager, Icon Manager Module, pyqt-app-info: referenced via `sys.path` as in ATW. `single_instance_guard.py` is vendored.
 
+## App icon
+`python tools/gen_icon.py` draws the icon from code: an indigo film reel, film unspooling along the bottom, and a pencil writing on it. It uses the TW/ATW flat style and pencil colours. Outputs are `assets/ICON_vtw_source.png` (256 px master), `assets/ICON_vtw.ico` (used by the EXE build), and the IMM set in `resources/icons/` (`app.ico`, `app.png`, `app_NxN.png`). After hand-editing the master in GIMP, run `python tools/gen_icon.py --from-source`.
+
 ## Not yet done
-- App icon (`assets/ICON_vtw.ico` and `resources/icons/` are empty; the EXE uses the default icon and IMM is skipped)
-- GitHub repo / CI workflow
+- CI workflow

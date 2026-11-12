@@ -22,6 +22,14 @@ A desktop application for viewing and editing descriptive metadata in **MP4, MPG
 
 ## Quick Start
 
+### Windows (executable)
+
+Download `video-tag-writer.exe` from [Releases](https://github.com/juren53/video-tag-writer/releases). It is a single file with ExifTool bundled, and no install is needed.
+
+**Latest release:** [v0.1.0](https://github.com/juren53/video-tag-writer/releases/tag/v0.1.0): initial release.
+
+### From source
+
 ```powershell
 git clone https://github.com/juren53/video-tag-writer.git
 cd video-tag-writer

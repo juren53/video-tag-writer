@@ -196,6 +196,7 @@ def run_self_test(report_path: str) -> int:
     try:
         app = QApplication.instance() or QApplication([sys.argv[0]])
         report['info']['qt platform'] = app.platformName()
+        checks['app icon loads'] = not get_app_icon().isNull()
         config.selected_file = None
         window = MainWindow()
         checks['main window builds'] = window.metadata_panel is not None and window.video_panel is not None
