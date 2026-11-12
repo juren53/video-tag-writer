@@ -40,6 +40,7 @@ Other options:
 | `-Yes` | Skip the y/N confirmation |
 | `-SkipBuild` | Reuse the existing `dist\VTW.exe`. It must report the same version and be newer than the last commit |
 | `-NotesFile path.md` | Use this file for the notes instead of `notes/release/` or the CHANGELOG |
+| `-SkipCI` | **Emergency only.** Publish even if CI for the commit isn't green. Prints a warning |
 
 ## What the script checks (it stops on any failure)
 
@@ -47,6 +48,7 @@ Other options:
 - The working tree is clean, and HEAD equals `origin/<branch>`
 - Tag `vX.Y.Z` doesn't exist locally or on GitHub
 - CHANGELOG.md has the `[X.Y.Z]` header
+- **CI is green for this exact commit.** The GitHub Actions run of `ci.yml` (Linux and Windows, with ExifTool and ffmpeg) must have succeeded. If it's still running, the script waits for it. Right after a push it retries for up to a minute until the run appears. If the run failed, it stops and prints the run's link.
 - The build passes: the full test suite, the PyInstaller build, and every EXE self-test check
 - The EXE's embedded ProductVersion equals `APP_VERSION`
 

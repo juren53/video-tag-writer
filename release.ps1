@@ -10,7 +10,10 @@
 #   .\release.ps1 -SkipBuild     # reuse the existing dist\ EXE (its version must match)
 #   .\release.ps1 -Draft         # create the release as a draft (publish later on GitHub)
 #   .\release.ps1 -NotesFile x.md
+#   .\release.ps1 -SkipCI        # EMERGENCY ONLY: publish even if CI is not green
 #
+# The commit being released must have a green GitHub Actions CI run (it waits for a
+# run still in progress).
 # Release notes = notes/release/vX.Y.Z.md if present (hand-written highlights),
 # otherwise the CHANGELOG.md section for X.Y.Z; a Download section (size, SHA-256,
 # bundled ExifTool version) is always appended.
@@ -22,6 +25,7 @@ param(
     [switch]$SkipBuild,
     [switch]$Draft,
     [switch]$Yes,
+    [switch]$SkipCI,
     [string]$NotesFile = ""
 )
 
@@ -86,6 +90,35 @@ Ok "CHANGELOG.md has a $Version entry"
 $readme = Get-Content "README.md" -Raw -Encoding UTF8
 if ($readme -notmatch [regex]::Escape("releases/tag/$Tag")) {
     Write-Host "  [WARN] README.md 'Latest release' does not link $Tag" -ForegroundColor Yellow
+}
+
+# ── CI must be green for this exact commit ───────────────────────
+# GitHub Actions (.github/workflows/ci.yml) runs the full suite on Linux + Windows with
+# ExifTool and ffmpeg.  A red run must not be released (ATW's CI was red for four months
+# of releases unnoticed).  -SkipCI overrides this for emergencies only.
+$short = $local.Substring(0, 7)
+if ($SkipCI) {
+    Write-Host "  [WARN] CI check skipped (-SkipCI) for $short" -ForegroundColor Yellow
+} else {
+    $run = $null
+    for ($i = 0; $i -lt 7 -and -not $run; $i++) {
+        # A just-pushed commit can take a few seconds to get its CI run registered
+        if ($i -gt 0) { Start-Sleep -Seconds 10 }
+        $json = & gh run list --repo $Repo --workflow ci.yml --commit $local --limit 1 `
+                    --json databaseId,status,conclusion,url --jq '.[0]' 2>$null
+        if ($LASTEXITCODE -eq 0 -and $json -and $json -ne 'null') { $run = $json | ConvertFrom-Json }
+    }
+    if (-not $run) { Fail "No CI run found for $short on GitHub. Was it pushed? See https://github.com/$Repo/actions" }
+
+    if ($run.status -ne "completed") {
+        Write-Host "  [WAIT] CI for $short is '$($run.status)' - waiting for it to finish ($($run.url))" -ForegroundColor Yellow
+        & gh run watch $run.databaseId --repo $Repo --interval 20 *> $null
+        $run = & gh run view $run.databaseId --repo $Repo --json status,conclusion,url | ConvertFrom-Json
+    }
+    if ($run.conclusion -ne "success") {
+        Fail "CI for $short finished as '$($run.conclusion)': $($run.url)`nFix the failure and push again (or use -SkipCI in an emergency)."
+    }
+    Ok "CI passed for $short"
 }
 
 # ── Build (tests + EXE + self-test) ──────────────────────────────
