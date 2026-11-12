@@ -1,0 +1,8 @@
+PyQt6>=6.4.2
+PyExifTool>=0.5.6
+pyqt-app-info @ git+https://github.com/juren53/pyqt-app-info.git
+pytest>=7.0
+
+# External tools (not pip-installable):
+#   ExifTool  (required)  https://exiftool.org — must be on PATH or set exiftool_path in config
+#   ffmpeg/ffprobe (optional) — richer technical info and poster frames
