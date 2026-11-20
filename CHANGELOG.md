@@ -5,6 +5,20 @@ All notable changes to the VideoTagWriter project will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## VideoTagWriter [Unreleased]
+
+### Added
+- **Linux System Menu entry and `vtw` command**: `./install-desktop.sh` adds
+  "Video Tag Writer" to the System Menu (`~/.local/share/applications/vtw.desktop`,
+  registered for MP4/M4V/MPEG files) and links `~/.local/bin/vtw` to `run.sh`, so
+  `vtw [file]` works from any directory. `--uninstall` removes both.
+
+### Changed
+- `run.sh` finds its real location through symlinks, and makes file arguments
+  absolute before changing into the project folder (`vtw ./clip.mp4` works).
+- The app sets its desktop file name (`vtw`), so the taskbar and Wayland match the
+  window to the menu entry and its icon.
+
 ## VideoTagWriter [0.2.1] - 2026-11-12 1034 CST
 
 ### Changed
