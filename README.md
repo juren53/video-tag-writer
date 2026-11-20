@@ -41,6 +41,14 @@ cd video-tag-writer
 
 Linux/macOS: `./run.sh`
 
+Linux System Menu and PATH (user-level, no sudo):
+
+```bash
+./install-desktop.sh               # adds "Video Tag Writer" to the menu and a `vtw` command in ~/.local/bin
+vtw path/to/video.mp4              # launch from any directory
+./install-desktop.sh --uninstall   # removes both
+```
+
 ## Where metadata goes
 
 | Format | Stored in | Tag groups |

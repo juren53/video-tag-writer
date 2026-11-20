@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Video Tag Writer
+GenericName=Video Tag Writer
+Comment=Video file metadata editor (MP4, M4V, MPG, MPEG)
+Exec=/home/juren/Projects/video-tag-writer/run.sh %f
+Icon=/home/juren/Projects/video-tag-writer/resources/icons/app_256x256.png
+Terminal=false
+MimeType=video/mp4;video/x-m4v;video/mpeg;
+Categories=AudioVideo;Video;Utility;
+StartupNotify=true
+StartupWMClass=VideoTagWriter
+Keywords=video;tags;metadata;mp4;mpeg;exiftool;
+Path=/home/juren/Projects/video-tag-writer

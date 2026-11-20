@@ -242,6 +242,7 @@ def main():
 
     app = QApplication(sys.argv)
     app.setApplicationName(APP_NAME)
+    app.setDesktopFileName("vtw")  # matches ~/.local/share/applications/vtw.desktop
     app.setOrganizationName(APP_ORGANIZATION)
     app.setApplicationVersion(APP_VERSION)
     app.setStyle("Fusion")

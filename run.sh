@@ -8,7 +8,20 @@ ENTRY_POINT="src/main.py"
 VENV_DIR="venv"
 REQUIREMENTS="requirements.txt"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Resolve symlinks so `vtw` in ~/.local/bin (a symlink to this file) works.
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+
+# Make file/folder arguments absolute before changing directory.
+ARGS=()
+for a in "$@"; do
+    if [[ "$a" != -* && -e "$a" ]]; then
+        ARGS+=("$(readlink -f "$a")")
+    else
+        ARGS+=("$a")
+    fi
+done
+set -- "${ARGS[@]}"
+
 cd "$SCRIPT_DIR"
 
 venv_valid() {
